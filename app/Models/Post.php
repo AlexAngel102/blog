@@ -2,55 +2,12 @@
 
 namespace App\Models;
 
-use App\Vendor\DBConnection;
+use App\Lib\DBConnection;
 use PDO;
 
 class Post
 {
-    private $use;
-    private $post;
-    private $id;
-    private $date;
-
-    public function __construct($userName)
-    {
-//        $this->id =
-        $this->userName = $userName;
-//        $this->coockies = ;
-    }
-
-    public function setUserName($userName): void
-    {
-        $this->userName = $userName;
-    }
-
-    public function setCoockies($cookies): void
-    {
-        $this->coockies = $cookies;
-    }
-
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
-
-    public function getUserName()
-    {
-        return $this->userName;
-    }
-
-    public function getCoockies()
-    {
-        return $this->coockies;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getAllPost(){
-        DBConnection::connect();
+    public static function getAllPost(){
         $query = "
             SELECT *
             FROM post

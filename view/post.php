@@ -15,5 +15,10 @@
         <div class="card-action">
             <a href="#" class="btn-info">Add Comment</a>
         </div>
+        <form action="/form" method="post">
+            <input type="text" value="Aleksandr" name="name" hidden>
+            <button type="submit">press me</button>
+        </form>
     </div>
 </div>
+<script src="../js/getPosts.js"></script>

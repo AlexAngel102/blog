@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Vendor;
+namespace App\Lib;
 
 use Exception;
 

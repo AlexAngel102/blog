@@ -1,5 +1,5 @@
 <?php
-namespace App\Vendor;
+namespace App\Lib;
 
 /**
  * .env file instruction:
