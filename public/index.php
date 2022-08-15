@@ -1,13 +1,5 @@
 <?php
 
-use App\Psr4AutoloaderClass;
-use App\Controllers\Controller;
-
-require_once "../vendor/Psr4AutoloaderClass.php";
-require_once "../vendor/db_connect.php";
-
-$loader = new Psr4AutoloaderClass;
-$loader->register();
-$loader->addNamespace('App', "../app/");
-
-//include "../view/layout.php";
+require_once "../app/core.php";
+require_once "../view/layout.php";
+$_POST = ['file' => 'post.php'];
