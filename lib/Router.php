@@ -9,14 +9,24 @@ class Router
     public static function route(string $requestMethod, string $uri, string|callable $controllerMethod)
     {
         if ($_SERVER['REQUEST_METHOD'] === strtoupper($requestMethod)){
-                self::method($uri, $controllerMethod);
+            switch ($requestMethod){
+                case 'GET':
+                    $requestData = $_GET;
+                    break;
+                case 'POST':
+                    $requestData = $_POST;
+                    break;
+                default:
+                    $requestData = [];
+            }
+                self::method($uri, $controllerMethod, $requestData);
         }
-        http_response_code(404);
+//        http_response_code(404);
     }
 
-    private static function method(string $uri, string|callable $controllerMethod)
+    private static function method(string $uri, string|callable $controllerMethod, array $requestData)
     {
-        self::checkAndLoad($uri, $controllerMethod, $_GET);
+        self::checkAndLoad($uri, $controllerMethod, $requestData);
     }
 
     private static function checkAndLoad(string $uri, string|callable $controllerMethod, array $requestData)
