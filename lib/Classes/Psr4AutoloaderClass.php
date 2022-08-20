@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib;
+namespace App\Classes;
 
 /**
  * An example of a general-purpose implementation that includes the optional
@@ -157,8 +157,8 @@ class Psr4AutoloaderClass
             // replace namespace separators with directory separators
             // in the relative class name, append with .php
             $file = $base_dir
-                  . str_replace('\\', '/', $relative_class)
-                  . '.php';
+                . str_replace('\\', '/', $relative_class)
+                . '.php';
 
             // if the mapped file exists, require it
             if ($this->requireFile($file)) {

@@ -1,12 +1,8 @@
 <?php
 
-use App\Lib\Router;
+use App\Classes\Router;
 
-Router::route("GET",'/', function () {
-    $result = require_once "../view/post.php";
-    return $result;
-});
+Router::route("GET",'/', 'PostController::getPost');
 
-Router::route("POST",'/form', 'MainController::getPosts');
-
-Router::route('POST','/test', 'MainController::hello');
+Router::route("GET", '/(\?(post=(\d*)))$', 'PostController::getPost');
+Router::route("POST",'/addpost', "PostController::addPost");

@@ -1,24 +1,24 @@
-<?php
-?>
-<div class="container">
-    <div class="card darken-1">
-        <div class="card-content">
-            <div class="">
-                <span class="card-title">{$userName}</span>
-            </div>
-            <p>I am a very simple card. I am good at containing small bits of information.
-                I am convenient because I require little markup to use effectively.</p>
-            <div class="container-fluid">
-                <span class="">{$post_date}</span>
+<?php if(is_array($posts)):foreach ($posts as $post):?>
+<a href="/?post=<?=$post['post_id']?>" class="text-black">
+    <div class="container">
+        <div class="card darken-1">
+            <div class="card-content">
+                <div class="text-black">
+                    <p class="card-group" id="visitore_name"><?=$post['user_name'];?></p>
+                    <p class="card-body" id="post"><?=$post['post_content'];?></p>
+                    <div class="d-flex">
+                        <label class="col-form-label" for="rate">Rating</label>
+                        <span class="flex-column col left-align p-3" id="rate"><?=round($post['rate_value'], 1);?></span>
+                        <span class="flex-column col right-align p-3" id="created_at"><?=$post['post_date'];?></span>
+                        <form action="/reply" method="post" name="post<?=$post['post_id']?>" hidden>
+                        <button type="button" class="flex-column right-align z-depth-3 waves-effect waves-light btn-large white-text">Reply</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-action">
-            <a href="#" class="btn-info">Add Comment</a>
-        </div>
-        <form action="/form" method="post">
-            <input type="text" value="Aleksandr" name="name" hidden>
-            <button type="submit">press me</button>
-        </form>
     </div>
-</div>
-<script src="../js/getPosts.js"></script>
+</a>
+<?php endforeach?>
+<?php else: http_response_code(404);
+endif;?>

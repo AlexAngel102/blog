@@ -1,5 +1,5 @@
 <?php
-namespace App\Lib;
+namespace App\Classes;
 
 /**
  * .env file instruction:
@@ -17,7 +17,6 @@ namespace App\Lib;
 
 
 use Exception;
-use InvalidArgumentException;
 
 
 class DotEnvParser
@@ -29,7 +28,7 @@ class DotEnvParser
         if ($exists && $match) {
             $txt_file = file_get_contents($pathToFile);
         } else {
-            throw new InvalidArgumentExceptionAlias("File doesn't exists, match or wrong path");
+            throw new \InvalidArgumentExceptionAlias("File doesn't exists, match or wrong path");
         }
         $rows = explode("\n", $txt_file);
         return $rows;
