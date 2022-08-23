@@ -9,14 +9,17 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Compiled and minified CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/materialize.min.css" rel="stylesheet">
+    <!-- CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/materialize.min.css" rel="stylesheet">
+    <link href="../css/extra.css" rel="stylesheet">
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/materialize.min.js"></script>
-    <script src="js/jquery-3.6.0.min.js"></script>
+    <!-- JavaScript -->
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/materialize.min.js"></script>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script src="../js/star.js"></script>
+    <script src="../js/post.js"></script>
 
     <title>Blog</title>
 </head>

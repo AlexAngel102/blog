@@ -1,6 +1,9 @@
+"use strict"
+
 $(document).ready(function () {
-    $("#test").submit(function (event) {
+    $("#addpost").submit(function (event) {
         event.preventDefault();
+        console.log(event);
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
@@ -9,9 +12,10 @@ $(document).ready(function () {
             contentType: false,
             cache: false,
             processData: false,
-            success: function (data) {
-                let result = JSON.parse(data);
-
+            success: function () {
+                $.get('/',{},function (){
+                    location.reload();
+                });
             }
         })
     })

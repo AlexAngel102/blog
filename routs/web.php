@@ -2,7 +2,19 @@
 
 use App\Classes\Router;
 
-Router::route("GET",'/', 'PostController::getPost');
+/**
+ * Multiple params for $_GET request
+ * /\/?((&|\?)[a-zA-Z]+=(\w+))+
+ * /(\?(post=(\d+)))$
+ **/
 
-Router::route("GET", '/(\?(post=(\d*)))$', 'PostController::getPost');
+
+Router::route("GET",'/$', 'PostController::getPost');
+
+Router::route("GET", '/posts/(\?(post=(\d+)))$', 'PostController::getPost');
+
 Router::route("POST",'/addpost', "PostController::addPost");
+
+Router::route("GET", '/getComments/(\?(post=(\d+)))$', "CommentController::getComments");
+
+Router::route("POST",'/addcomment', "CommentController::addComment");

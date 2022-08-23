@@ -8,23 +8,19 @@ class Router
 
     public static function run()
     {
+
         $uri = $_SERVER['REQUEST_URI'];
         $action = $_SERVER['REQUEST_METHOD'];
         $routs = self::$routs;
         foreach ($routs as $rout) {
             if (in_array($action, $rout)) {
-                if (self::ifGET($action, $rout, $uri)) {
-                    $result = self::runMethod($rout);
-                    return $result;
-                }elseif (in_array($uri, $rout)) {
-                    $result = self::runMethod($rout);
-                    return $result;
+                if (self::checkURI($rout, $uri)) {
+                    self::runMethod($rout);
+                    return;
                 }
             }
         }
-        if (!isset($result)){
-            http_response_code(404);
-        }
+        http_response_code(404);
     }
 
 
@@ -74,17 +70,16 @@ class Router
         }
     }
 
-    private static function ifGET(string $action, array $rout, string $uri)
+    private static function checkURI(array $rout, string $uri)
     {
-        $res = trim($rout['uri'], '/');
-        if ($action === "GET") {
-            if ($res !== "") {
-                preg_match("/$res/", $uri, $matches);
-                if (isset($matches[0])) {
-                    return true;
-                }
-            }
+        $rout = strtolower($rout['uri']);
+        $uri = strtolower($uri);
+        $res = '/' . str_replace('/', '\\/', $rout) . '/';
+        preg_match($res, $uri, $matches);
+        if (isset($matches[0])) {
+            return true;
         }
+        return false;
     }
 
 
@@ -94,7 +89,6 @@ class Router
             case true:
                 $result = call_user_func($rout['method']);
                 if ($result) {
-                    json_encode($result);
                     break;
                 }
                 return $result;
@@ -102,7 +96,7 @@ class Router
                 $controller = new $rout['method']['controller'];
                 $method = $rout['method']['func'];
                 $data = $rout['data'];
-                json_encode($controller->$method($data));
+                $controller->$method($data);
         }
     }
 }

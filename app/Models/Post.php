@@ -5,26 +5,24 @@ namespace App\Models;
 use App\Classes\DBConnection;
 use PDO;
 
-class Post
+class Post extends AbstractModel
 {
     public static function getAllPost()
     {
         $query = "
             SELECT
-              post.post_id,
-              post.post_content,
-              post.post_date,
-              user.user_name,
-              (AVG(post_rating.rate_value)) AS rate_value
-            FROM post
-              LEFT JOIN user
-                ON post.user_id = user.user_id
-              RIGHT JOIN post_rating
-                ON post_rating.post_id = post.post_id
-                GROUP BY post_rating.post_id;
+                post.post_id,
+                post.post,
+                post.created_at,
+                post.visitore_name
+            FROM
+                post
+            ORDER BY 
+                post_id DESC;
         ";
-        $posts = DB->query($query);
-        $result = $posts->fetchAll(PDO::FETCH_ASSOC);
+        $statement = DB->prepare($query);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (empty($result)) {
             return "Posts not found";
         }
@@ -33,33 +31,43 @@ class Post
 
     public static function getPost(int $id)
     {
-        $query = /** @lang text */
+        $query =
             "
             SELECT
-              post.post_id,
-              post.post_content,
-              post.post_date,
-              user.user_name,
-              AVG(post_rating.rate_value) AS rate_value
-            FROM post
-              INNER JOIN user
-                ON user.user_id = post.user_id
-              INNER JOIN post_rating
-                ON post_rating.post_id = post.post_id
-            WHERE post.post_id = $id
-            GROUP BY post_rating.post_id,
-                     post.post_id
+                post.post_id,
+                post.post,
+                post.created_at,
+                post.visitore_name
+            FROM
+                post
+            WHERE post_id = :id;
         ";
-        DB->prepare($query);
-        $posts = DB->query($query);
-        $result = $posts->fetchAll(PDO::FETCH_ASSOC);
+        $statement = DB->prepare($query);
+        $statement->bindParam(':id', $id);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (empty($result)) {
             return;
         }
         return $result;
     }
 
-    public static function addPost(){
-        dump($_POST);
+    public static function addPost(string $userName, string $text, string $date)
+    {
+        $query = "
+        INSERT INTO `post` (`post_id`, `post`, `visitore_name`, `created_at`) 
+        VALUES (NULL, :text, :name, :date);
+               
+        ";
+        $statement = DB->prepare($query);
+        $statement->bindParam(':text', $text);
+        $statement->bindParam(':name', $userName);
+        $statement->bindParam(':date', $date);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($result)) {
+            return;
+        }
+        return $result;
     }
 }

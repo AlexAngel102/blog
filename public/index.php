@@ -1,4 +1,8 @@
 <?php
-session_start();
+try {
+    require_once __DIR__ . "/../app/core.php";
+}catch (Exception $e){
+    error_log($e->getTrace());
+}
+?>
 
-require_once "../app/core.php";
