@@ -16,6 +16,7 @@ class CommentController
                     require_once __DIR__ . "/../../view/comment.view.php";
                     return;
                 }
+                return "Not found";
             }
         } catch (\Exception $e) {
             error_log('PDOException - ' . $e->getMessage(), 0);

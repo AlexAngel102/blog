@@ -9,7 +9,9 @@ use App\Classes\Router;
  **/
 
 
-Router::route("GET",'/$', 'PostController::getPost');
+Router::route("GET",'/$', 'MainController::view');
+
+Router::route("GET",'/allposts', "PostController::getPosts");
 
 Router::route("GET", '/posts/(\?(post=(\d+)))$', 'PostController::getPost');
 

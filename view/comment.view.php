@@ -9,10 +9,9 @@
                         <span class="flex-column col right-align p-3"
                               name="created_at"><?= $comment['created_at']; ?></span>
                     </div>
-                    <span data="block"></span>
                 </div>
             </div>
         </div>
 <?php endforeach; ?>
-<?php else: http_response_code(404);
+<?php else: echo "<h6>No comments yet</h6>";
 endif; ?>

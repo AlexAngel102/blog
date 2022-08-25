@@ -14,26 +14,31 @@ class PostController
                 $id = $_GET['post'];
                 if (isset($id) && is_numeric($id)) {
                     $posts = Post::getPost($id);
-                    require_once __DIR__ . '/../../view/layoutHeader.php';
-                    require_once __DIR__ . '/../../view/postsBar.php';
                     require_once __DIR__ . '/../../view/post.view.php';
-                    require_once __DIR__ . '/../../view/reply.php';
-                    require_once __DIR__."/../../view/addComment.php";
-                    require_once __DIR__ . '/../../view/layoutFooter.php';
+//                    require_once __DIR__ . '/../../view/reply.php';
+                    require_once __DIR__ . "/../../view/addComment.php";
                     return;
                 }
             }
-            $posts = Post::getAllPost();
-            require_once __DIR__ . '/../../view/layoutHeader.php';
-            require_once __DIR__ . '/../../view/postsBar.php';
-            require_once __DIR__ . '/../../view/post.view.php';
-            require_once __DIR__ . '/../../view/addPost.php';
-            require_once __DIR__ . '/../../view/layoutFooter.php';
+
         } catch (\PDOException $e) {
             error_log('PDOException - ' . $e->getMessage(), 0);
             http_response_code(403);
         }
     }
+
+    public static function getPosts()
+    {
+        try {
+            $posts = Post::getAllPost();
+            require_once __DIR__ . '/../../view/post.view.php';
+            require_once __DIR__ . '/../../view/addPost.php';
+        } catch (\PDOException $e) {
+            error_log('PDOException - ' . $e->getMessage(), 0);
+            http_response_code(403);
+        }
+    }
+
 
     public static function addPost()
     {

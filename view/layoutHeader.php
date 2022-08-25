@@ -18,8 +18,7 @@
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/materialize.min.js"></script>
     <script src="../js/jquery-3.6.0.min.js"></script>
-    <script src="../js/star.js"></script>
-    <script src="../js/post.js"></script>
+    <script src="../../js/post.js"></script>
 
     <title>Blog</title>
 </head>

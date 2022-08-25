@@ -5680,7 +5680,7 @@ textarea.form-control-lg {
     word-wrap: break-word
 }
 
-.modal {
+.modal{
     --bs-modal-zindex: 1055;
     --bs-modal-width: 500px;
     --bs-modal-padding: 1rem;
@@ -5839,7 +5839,7 @@ textarea.form-control-lg {
 }
 
 @media (min-width: 576px) {
-    .modal {
+    .modal{
         --bs-modal-margin: 1.75rem;
         --bs-modal-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)
     }
