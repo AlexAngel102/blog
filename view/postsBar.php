@@ -5,7 +5,7 @@
             <a href="#" class="d-block z-depth-3 waves-effect waves-light btn-large white-text">Negative posts {$negativePosts}</a>
         </div>
         <div class="col">
-            <a href="/" class="z-depth-3 waves-effect waves-light btn-large white-text">All posts {$allPosts}</a>
+            <a href="/" class="z-depth-3 waves-effect waves-light btn-large white-text allposts">All posts {$allPosts}</a>
         </div>
         <div class="col">
             <a href="#" class="z-depth-3 waves-effect waves-light btn-large white-text">Positive posts {$positivePosts}</a>

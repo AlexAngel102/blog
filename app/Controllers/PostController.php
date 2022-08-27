@@ -4,8 +4,9 @@ namespace App\Controllers;
 
 use App\Classes\CookieHelper;
 use App\Models\Post;
+use App\Models\Rating;
 
-class PostController
+class PostController extends Controller
 {
     public static function getPost()
     {
@@ -15,7 +16,6 @@ class PostController
                 if (isset($id) && is_numeric($id)) {
                     $posts = Post::getPost($id);
                     require_once __DIR__ . '/../../view/post.view.php';
-//                    require_once __DIR__ . '/../../view/reply.php';
                     require_once __DIR__ . "/../../view/addComment.php";
                     return;
                 }
@@ -42,9 +42,18 @@ class PostController
 
     public static function addPost()
     {
-        $userName = $_POST['visitor_name'];
-        $text = $_POST['post'];
-        $date = date('Y-m-d');
-        Post::addPost($userName, $text, $date);
+        try {
+            $userName = self::check($_POST['visitor_name']);
+            $post = self::check($_POST['post']);
+            if (mb_strlen($post) > 1024) {
+                echo "To long text";
+            }
+            $date = date('Y-m-d');
+
+            Post::addPost($userName, $post, $date);
+        } catch (\Exception $e) {
+            error_log('PDOException - ' . $e->getMessage(), 0);
+            http_response_code(403);
+        }
     }
 }

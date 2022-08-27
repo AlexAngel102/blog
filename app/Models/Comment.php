@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Classes\DBConnection;
 use PDO;
 
-class Comment extends AbstractModel
+class Comment
 {
     public static function getComments(int $id)
     {
         $query =
             "
             SELECT
+                comment.comment_id,
                 comment.comment,
                 comment.created_at,
                 comment.visitore_name

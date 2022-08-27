@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Classes\DBConnection;
 use PDO;
 
-class Post extends AbstractModel
+class Post
 {
     public static function getAllPost()
     {
@@ -55,9 +55,8 @@ class Post extends AbstractModel
     public static function addPost(string $userName, string $text, string $date)
     {
         $query = "
-        INSERT INTO `post` (`post_id`, `post`, `visitore_name`, `created_at`) 
-        VALUES (NULL, :text, :name, :date);
-               
+        INSERT INTO `post` (`post`, `visitore_name`, `created_at`) 
+        VALUES (:text, :name, :date);
         ";
         $statement = DB->prepare($query);
         $statement->bindParam(':text', $text);

@@ -20,3 +20,8 @@ Router::route("POST",'/addpost', "PostController::addPost");
 Router::route("GET", '/getComments/(\?(post=(\d+)))$', "CommentController::getComments");
 
 Router::route("POST",'/addcomment', "CommentController::addComment");
+
+Router::route("POST",'/ratepost', "RatingController::ratePost");
+
+Router::route("POST",'/getrate', "RatingController::getRating");
+
