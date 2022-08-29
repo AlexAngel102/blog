@@ -6,6 +6,9 @@ window.addEventListener('load', function (ev) {
 
     function getAllPosts() {
         $.get('/allposts', {}, function (data) {
+            for (let result of data){
+                console.log(result);
+            }
             document.getElementById('postBlock').innerHTML;
             let postIds = document.querySelectorAll('input.postId');
             for (let i = 0; i < postIds.length; i++) {

@@ -27,8 +27,6 @@ class Router
      *  @ Type of return result
      *  $json = json | default = false
      */
-//    public static function route(string $requestMethod, string $uri, string|callable $controllerMethod)
-
 
     public static function route(string $requestMethod, string $uri, string|callable $controllerMethod, bool $json = false)
     {
@@ -92,6 +90,7 @@ class Router
                 $method = $rout['method']['func'];
                 switch ($rout['json']) {
                     case true:
+                        header('content-type: application/json; charset=utf-8');
                         echo json_encode($controller->$method());
                         break;
                     case false:
