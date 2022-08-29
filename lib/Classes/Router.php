@@ -23,24 +23,22 @@ class Router
         http_response_code(404);
     }
 
+    /*
+     *  @ Type of return result
+     *  $json = json | default = false
+     */
+//    public static function route(string $requestMethod, string $uri, string|callable $controllerMethod)
 
-    public static function route(string $requestMethod, string $uri, string|callable $controllerMethod)
+
+    public static function route(string $requestMethod, string $uri, string|callable $controllerMethod, bool $json = false)
     {
-        switch (strtoupper($requestMethod)) {
-            case 'GET':
-                $requestData = $_GET;
-                break;
-            case 'POST':
-                $requestData = $_POST;
-                break;
-        }
         $method = self::methodLoad($controllerMethod);
 
         self::$routs[] = [
             'uri' => $uri,
             'action' => $requestMethod,
             'method' => $method,
-            'data' => $requestData,
+            'json' => $json,
         ];
     }
 
@@ -87,16 +85,21 @@ class Router
     {
         switch (is_callable($rout['method'])) {
             case true:
-                $result = call_user_func($rout['method']);
-                if ($result) {
-                    break;
-                }
-                return $result;
+                call_user_func($rout['method']);
+                break;
             default:
                 $controller = new $rout['method']['controller'];
                 $method = $rout['method']['func'];
-                $data = $rout['data'];
-                $controller->$method($data);
+                switch ($rout['json']) {
+                    case true:
+                        echo json_encode($controller->$method());
+                        break;
+                    case false:
+                        $controller->$method();
+                        break;
+                    default:
+                        $controller->$method();
+                }
         }
     }
 }

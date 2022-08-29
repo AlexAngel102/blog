@@ -23,21 +23,19 @@ class RatingController extends Controller
             http_response_code(403);
         }
 
-        $result = Rating::ratePost($postId, $rating);
-        echo json_encode($result);
+        Rating::ratePost($postId, $rating);
     }
 
     public static function getRating()
     {
-        if (self::check($_POST['post_id']) && is_numeric($_POST['post_id'])) {
-            $postId = $_POST['post_id'];
+        if (self::check($_GET['post']) && is_numeric($_GET['post'])) {
+            $postId = $_GET['post'];
         } else {
             http_response_code(403);
         }
 
-        $result = Rating::getRate($postId);
+        return Rating::getRate($postId);
 
-        json_encode($result);
     }
 
 }

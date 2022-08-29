@@ -12,15 +12,11 @@ class PostController extends Controller
     {
         try {
             if (key_exists('post', $_GET)) {
-                $id = $_GET['post'];
-                if (isset($id) && is_numeric($id)) {
-                    $posts = Post::getPost($id);
-                    require_once __DIR__ . '/../../view/post.view.php';
-                    require_once __DIR__ . "/../../view/addComment.php";
-                    return;
+                $id = self::check($_GET['post']);
+                if (is_numeric($id)) {
+                    return Post::getPost($id);;
                 }
             }
-
         } catch (\PDOException $e) {
             error_log('PDOException - ' . $e->getMessage(), 0);
             http_response_code(403);
@@ -30,9 +26,7 @@ class PostController extends Controller
     public static function getPosts()
     {
         try {
-            $posts = Post::getAllPost();
-            require_once __DIR__ . '/../../view/post.view.php';
-            require_once __DIR__ . '/../../view/addPost.php';
+            return Post::getAllPost();
         } catch (\PDOException $e) {
             error_log('PDOException - ' . $e->getMessage(), 0);
             http_response_code(403);
@@ -49,7 +43,6 @@ class PostController extends Controller
                 echo "To long text";
             }
             $date = date('Y-m-d');
-
             Post::addPost($userName, $post, $date);
         } catch (\Exception $e) {
             error_log('PDOException - ' . $e->getMessage(), 0);
