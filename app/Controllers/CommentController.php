@@ -12,9 +12,7 @@ class CommentController extends Controller
             if (key_exists('post', $_GET)) {
                 $id = $_GET['post'];
                 if (isset($id) && is_numeric($id)) {
-                    $comments = Comment::getComments($id);
-                    require_once __DIR__ . "/../../view/comment.view.php";
-                    return;
+                    return Comment::getComments($id);
                 }
                 return "Not found";
             }
@@ -35,7 +33,6 @@ class CommentController extends Controller
                 echo "Comment to long";
                 exit();
             }
-
             Comment::addComment($postId, $userName, $comment, $date);
         } catch (\Exception $e) {
             error_log('PDOException - ' . $e->getMessage(), 0);

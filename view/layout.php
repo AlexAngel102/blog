@@ -26,53 +26,148 @@
 <body>
 
 <div class="container align-center">
-    <div class="row container p-3">
-        <div class="col row">
-            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none" id="negativePosts"><i class="material-icons left">thumb_down</i>Negative: </div>
+    <div class="d-inline-flex w-100">
+        <div class="col row p-3">
+            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none"
+                 id="negativePosts"><i class="material-icons left">thumb_down</i>Negative:
+            </div>
         </div>
-        <div class="col row">
-            <a href="/" class="z-depth-3 waves-effect waves-light btn-large white-text allposts" id="allposts"><i class="material-icons left">list</i>All posts: </a>
+        <div class="col row p-3">
+            <a href="/" class="z-depth-3 waves-effect waves-light btn-large white-text" id="allposts"><i
+                        class="material-icons left">list</i>All posts: </a>
         </div>
-        <div class="col row">
-            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none" id="positivePosts"><i class="material-icons left">thumb_up</i>Positive: </div>
+        <div class="col row p-3">
+            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none"
+                 id="positivePosts"><i class="material-icons left">thumb_up</i>Positive:
+            </div>
         </div>
     </div>
 
-<div class="" id="postBlock">
+    <div class="" id="postBlock"></div>
+    <div class="container right" id="comments" hidden>
+    </div>
+
+    <div class="fixed-action-btn">
+        <button class="btn-floating btn-large red pulse modal-trigger" id="addPostButton" data-bs-toggle="modal" data-bs-target="#postModal">
+            <i class="large material-icons">mode_edit</i>
+        </button>
+        <script src="../../js/floatButton.js"></script>
+    </div>
+    <footer>
+    </footer>
+
+    <!--  Post template  -->
+    <template id="postTemplate">
+        <div class="card darken-1 fade show">
+            <div class="card-content">
+                <a href="" class="text-black post">
+                    <div class="text-black">
+                        <p class="card-title" name="visitore_name"></p>
+                        <div>
+                            <p class="card-body" name="post"></p>
+                        </div>
+                    </div>
+                </a>
+                <div id="postId">
+                    <div class="rating rating_set" data-ajax="true">
+                        <div class="rating__body">
+                            <div class="rating__active"></div>
+                            <div class="rating__items">
+                                <input type="hidden" class="postId" value="">
+                                <input type="radio" class="rating__item" name="rating" value="1">
+                                <input type="radio" class="rating__item" name="rating" value="2">
+                                <input type="radio" class="rating__item" name="rating" value="3">
+                                <input type="radio" class="rating__item" name="rating" value="4">
+                                <input type="radio" class="rating__item" name="rating" value="5">
+                            </div>
+                        </div>
+                        <div class="rating__value"></div>
+                    </div>
+                </div>
+                <div class="p-3"><span class="flex-column col right-align p-3" name="created_at"></span>
+                </div>
+                <div class="d-flex">
+                </div>
+                    <button type="button" class="btn z-depth-3 white-text right" id="replyBtn" data-bs-toggle="modal" data-bs-target="#replyModal" hidden>Reply</button>
+            </div>
+        </div>
+</div>
+</template>
+<!-- Comment template-->
+<template id="commentTemplate">
+    <div class="card darken-1">
+        <div class="card-content">
+            <div class="text-black h-50">
+                <p class="card-title" name="visitore_name">`${visitore_name}`</p>
+                <div class="shorter" short-text>
+                    <p class="card-body" name="comment">`${comment}`</p>
+                </div>
+                <span class="flex-column col right-align p-3"
+                      name="created_at">`${created_at}`</span>
+            </div>
+        </div>
+    </div>
+    </div>
+    <h6 hidden>No comments yet</h6>
+</template>
+<!-- Add post  modal-->
+<div class="modal fade postModal" id="postModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Add post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/addpost" method="post" class="addPostForm" id="addPostForm" name="addPostForm">
+                    <label for="username">Name</label>
+                    <input type="text" name="visitor_name" required minlength="3">
+                    <label for="post">Text</label>
+                    <textarea class="materialize-textarea" name="post" required minlength="2"
+                              maxlength="1024"></textarea>
+                </form>
+            </div>
+            <div class="d-flex right">
+                <div class="flex-column px-3">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+                <div class="px-3 flex-column">
+                    <button type="submit" class="btn btn-primary postBtn" form="addPostForm" id="postBtn"
+                            name="postBtn">Apply
+                    </button>
+                </div>
+                <p></p>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="fixed-action-btn">
-    <button class="btn-floating btn-large red pulse modal-trigger addPostButton" id="addPostButton" data-bs-toggle="modal" data-bs-target="#postModal">
-        <i class="large material-icons">mode_edit</i>
-    </button>
-    <script src="../../js/floatButton.js"></script>
-</div>
+<!-- Add comment modal -->
+<div class="modal fade replyModal" id="replyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-<footer>
-</footer>
-    <!-- Add post  modal-->
-    <div class="modal fade postModal" id="postModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Add post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/addpost" method="post" class="addPostForm" id="addPostForm" name="addPostForm">
-                        <label for="username">Name</label>
-                        <input type="text" name="visitor_name" required minlength="3">
-                        <label for="post">Text</label>
-                        <textarea class="materialize-textarea" name="post" required minlength="2"
-                                  maxlength="1024"></textarea>
-                    </form>
-                </div>
+            <div class="modal-body">
+                <form action="/addcomment" method="post" class="addCommentForm" id="addCommentForm"
+                      name="addCommentForm">
+                <input type="hidden" name="post_id" class="postId" value="" id="commentPostId">
+                <label for="username">Name</label>
+                <input type="text" name="visitor_name" required minlength="1">
+                <label for="post">Your comment</label>
+                <textarea class="materialize-textarea" name="comment" required minlength="1" maxlength="250"></textarea>
+                </form>
                 <div class="d-flex right">
                     <div class="flex-column px-3">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                     <div class="px-3 flex-column">
-                        <button type="submit" class="btn btn-primary postBtn" form="addPostForm" id="postBtn" name="postBtn">Apply</button>
+                        <button type="submit" class="btn btn-primary commentBtn" form="addCommentForm" id="commentBtn"
+                                name="commentBtn">Apply
+                        </button>
                     </div>
                     <p></p>
                 </div>
@@ -80,34 +175,5 @@
         </div>
     </div>
 
-    <!-- Add comment modal -->
-    <div class="modal fade replyModal" id="replyModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Comment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form action="/addcomment" method="post" class="addCommentForm" id="addCommentForm" name="addCommentForm"">
-                    <input type="hidden" name="post_id" class="postId" value="`${post_id}`">
-                    <label for="username">Name</label>
-                    <input type="text" name="visitor_name" required minlength="1">
-                    <label for="post">Your comment</label>
-                    <textarea class="materialize-textarea" name="comment" required minlength="1" maxlength="250"></textarea>
-                    </form>
-                    <div class="d-flex right">
-                        <div class="flex-column px-3">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                        <div class="px-3 flex-column">
-                            <button type="submit" class="btn btn-primary commentBtn" form="addCommentForm" id="commentBtn" name="commentBtn">Apply</button>
-                        </div>
-                        <p></p>
-                    </div>
-                </div>
-            </div>
-        </div>
 </body>
 </html>
