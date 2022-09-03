@@ -8,13 +8,13 @@ class RatingController extends Controller
 {
     public static function ratePost()
     {
-        if (self::check($_POST['post_id']) && is_numeric($_POST['post_id'])) {
-            $postId = $_POST['post_id'];
+        if (self::check($_POST['post']) && is_numeric($_POST['post'])) {
+            $postId = $_POST['post'];
         } else {
             http_response_code(403);
         }
 
-        if (self::check($_POST['post_id']) && is_numeric($_POST['post_id'])) {
+        if (self::check($_POST['rating']) && is_numeric($_POST['rating'])) {
             $value = $_POST['rating'];
             if ($value >= 1 && $value <=5) {
                 $rating = $value;

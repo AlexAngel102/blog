@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -18,27 +19,28 @@
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script src="../../js/materialize.min.js"></script>
     <script src="../../js/jquery-3.6.0.min.js"></script>
-    <script src="../js/main.js"></script>
+    <script src="../../js/main.js"></script>
 
     <title>Blog</title>
 </head>
 <header></header>
+
 <body>
 
 <div class="container align-center">
     <div class="d-inline-flex w-100">
         <div class="col row p-3">
-            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none"
-                 id="negativePosts"><i class="material-icons left">thumb_down</i>Negative:
+            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none">
+                <i class="material-icons left">thumb_down</i>Negative: <span id="negativePosts"></span>
             </div>
         </div>
         <div class="col row p-3">
-            <a href="/" class="z-depth-3 waves-effect waves-light btn-large white-text" id="allposts"><i
-                        class="material-icons left">list</i>All posts: </a>
+            <a href="/" class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none" id="mainLink">
+                <i class="material-icons left">list</i>All posts: <span id="allposts"></span></a>
         </div>
         <div class="col row p-3">
-            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none"
-                 id="positivePosts"><i class="material-icons left">thumb_up</i>Positive:
+            <div class="z-depth-3 waves-effect waves-light btn-large white-text" style="pointer-events: none">
+                <i class="material-icons left">thumb_up</i>Positive: <span id="positivePosts"></span>
             </div>
         </div>
     </div>
@@ -48,10 +50,10 @@
     </div>
 
     <div class="fixed-action-btn">
-        <button class="btn-floating btn-large red pulse modal-trigger" id="addPostButton" data-bs-toggle="modal" data-bs-target="#postModal">
+        <button class="btn-floating btn-large red pulse modal-trigger" id="addPostButton" data-bs-toggle="modal"
+                data-bs-target="#postModal">
             <i class="large material-icons">mode_edit</i>
         </button>
-        <script src="../../js/floatButton.js"></script>
     </div>
     <footer>
     </footer>
@@ -68,49 +70,49 @@
                         </div>
                     </div>
                 </a>
-                <div id="postId">
-                    <div class="rating rating_set" data-ajax="true">
-                        <div class="rating__body">
-                            <div class="rating__active"></div>
-                            <div class="rating__items">
-                                <input type="hidden" class="postId" value="">
-                                <input type="radio" class="rating__item" name="rating" value="1">
-                                <input type="radio" class="rating__item" name="rating" value="2">
-                                <input type="radio" class="rating__item" name="rating" value="3">
-                                <input type="radio" class="rating__item" name="rating" value="4">
-                                <input type="radio" class="rating__item" name="rating" value="5">
-                            </div>
+                <div class="rating rating_set" data-ajax="true">
+                    <div class="rating__body">
+                        <div class="rating__active"></div>
+                        <div class="rating__items">
+                            <input type="hidden" class="postId" value="">
+                            <input type="radio" class="rating__item" name="rating" value="1">
+                            <input type="radio" class="rating__item" name="rating" value="2">
+                            <input type="radio" class="rating__item" name="rating" value="3">
+                            <input type="radio" class="rating__item" name="rating" value="4">
+                            <input type="radio" class="rating__item" name="rating" value="5">
                         </div>
-                        <div class="rating__value"></div>
                     </div>
+                    <div class="rating__value"></div>
                 </div>
                 <div class="p-3"><span class="flex-column col right-align p-3" name="created_at"></span>
                 </div>
                 <div class="d-flex">
                 </div>
-                    <button type="button" class="btn z-depth-3 white-text right" id="replyBtn" data-bs-toggle="modal" data-bs-target="#replyModal" hidden>Reply</button>
+                <button type="button" class="btn z-depth-3 white-text right" id="replyBtn" data-bs-toggle="modal"
+                        data-bs-target="#replyModal" hidden>Reply
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Comment template-->
+    <template id="commentTemplate">
+        <div class="card darken-1">
+            <div class="card-content">
+                <div class="text-black h-50">
+                    <p class="card-title" name="visitore_name">`${visitore_name}`</p>
+                    <div class="">
+                        <p class="card-body trunc" name="comment">`${comment}`</p>
+                    </div>
+                    <span class="flex-column col right-align p-3" name="created_at">`${created_at}`</span>
+                </div>
             </div>
         </div>
 </div>
+<h6 hidden>No comments yet</h6>
 </template>
-<!-- Comment template-->
-<template id="commentTemplate">
-    <div class="card darken-1">
-        <div class="card-content">
-            <div class="text-black h-50">
-                <p class="card-title" name="visitore_name">`${visitore_name}`</p>
-                <div class="shorter" short-text>
-                    <p class="card-body" name="comment">`${comment}`</p>
-                </div>
-                <span class="flex-column col right-align p-3"
-                      name="created_at">`${created_at}`</span>
-            </div>
-        </div>
-    </div>
-    </div>
-    <h6 hidden>No comments yet</h6>
-</template>
-<!-- Add post  modal-->
+
+<!-- Add post modal-->
 <div class="modal fade postModal" id="postModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-3">
@@ -121,9 +123,9 @@
             <div class="modal-body">
                 <form action="/addpost" method="post" class="addPostForm" id="addPostForm" name="addPostForm">
                     <label for="username">Name</label>
-                    <input type="text" name="visitor_name" required minlength="3">
-                    <label for="post">Text</label>
-                    <textarea class="materialize-textarea" name="post" required minlength="2"
+                    <input type="text" class="addPost" name="visitor_name" id="username" required minlength="3">
+                    <label for="postText">Text</label>
+                    <textarea class="materialize-textarea addPost" name="post" id="postText" required minlength="2"
                               maxlength="1024"></textarea>
                 </form>
             </div>
@@ -154,11 +156,12 @@
             <div class="modal-body">
                 <form action="/addcomment" method="post" class="addCommentForm" id="addCommentForm"
                       name="addCommentForm">
-                <input type="hidden" name="post_id" class="postId" value="" id="commentPostId">
-                <label for="username">Name</label>
-                <input type="text" name="visitor_name" required minlength="1">
-                <label for="post">Your comment</label>
-                <textarea class="materialize-textarea" name="comment" required minlength="1" maxlength="250"></textarea>
+                    <input type="hidden" name="post_id" class="postId" value="" id="commentPostId">
+                    <label for="comment">Name</label>
+                    <input type="text" class="comment" id="comment" name="visitor_name" required minlength="1">
+                    <label for="comment">Your comment</label>
+                    <textarea class="materialize-textarea comment" name="comment" id="comment" required minlength="1"
+                              maxlength="250"></textarea>
                 </form>
                 <div class="d-flex right">
                     <div class="flex-column px-3">
@@ -176,4 +179,5 @@
     </div>
 
 </body>
+
 </html>
