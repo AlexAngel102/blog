@@ -2,14 +2,14 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Хост: 127.0.0.1:3306
--- Время создания: Авг 22 2022 г., 21:40
--- Версия сервера: 8.0.29
--- Версия PHP: 8.1.5
+-- Хост: database
+-- Время создания: Сен 03 2022 г., 19:41
+-- Версия сервера: 8.0.30
+-- Версия PHP: 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+02:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,6 +20,8 @@ SET time_zone = "+02:00";
 --
 -- База данных: `myapp`
 --
+CREATE DATABASE IF NOT EXISTS `myapp` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `myapp`;
 
 -- --------------------------------------------------------
 
@@ -29,9 +31,9 @@ SET time_zone = "+02:00";
 
 CREATE TABLE `comment` (
   `comment_id` int NOT NULL,
-  `comment` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `comment` varchar(250) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `post_id` int NOT NULL,
-  `visitore_name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `visitore_name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -54,8 +56,8 @@ INSERT INTO `comment` (`comment_id`, `comment`, `post_id`, `visitore_name`, `cre
 
 CREATE TABLE `post` (
   `post_id` int NOT NULL,
-  `post` varchar(2048) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
-  `visitore_name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `post` varchar(2048) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `visitore_name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
