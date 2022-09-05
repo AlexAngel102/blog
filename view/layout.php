@@ -62,7 +62,7 @@
     <template id="postTemplate">
         <div class="card darken-1 fade show">
             <div class="card-content">
-                <a href="" class="text-black post">
+                <a href="" class="text-black post-link">
                     <div class="text-black">
                         <p class="card-title" name="visitore_name"></p>
                         <div>

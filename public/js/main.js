@@ -23,22 +23,30 @@ document.addEventListener("DOMContentLoaded", function (ev) {
     const reply = document.querySelector("div.replyModal");
     const replyModal = bootstrap.Modal.getOrCreateInstance(reply);
 
-    function clear() {
+    function clearPosts() {
         if (postBlock.hasChildNodes()) {
             postBlock.replaceChildren('');
         }
     }
 
-    async function getAllPosts() {
-        clear();
-        await $.get("/allposts", {}, async function (data) {
+    function clearComments() {
+        if (commentBlock.hasChildNodes()) {
+            commentBlock.replaceChildren('')
+        }
+    }
+
+    function getAllPosts() {
+        clearPosts();
+        $.get("/allposts", {}, async function (data) {
             allPosts.textContent = 0;
             allPosts.textContent = data.length;
             for (let result of data) {
-                await renderPost(result);
+                await renderPost(result)
             }
-            raiting();
-            positiveAndNegative();
+            setTimeout(function () {
+                raiting();
+                positiveAndNegative();
+            }, 0);
         });
     }
 
@@ -110,83 +118,85 @@ document.addEventListener("DOMContentLoaded", function (ev) {
         });
     });
 
-    $(document).on("click", "a.post", async function (e) {
+    function getComments(postId) {
+        $.get("/posts/", {"post": postId}, async function (result) {
+            clearPosts();
+            await renderPost(result[0]);
+            setTimeout(function () {
+                document.querySelector("#replyBtn").removeAttribute("hidden");
+                document.querySelector("#commentPostId").value = postId;
+                raiting();
+                clearComments();
+            }, 0);
+            await $.get("/getComments/", {post: postId}, function (comments) {
+                commentBlock.removeAttribute("hidden");
+                document.querySelector("a.post-link").style.cssText = "pointer-events:none";
+                if (comments != null) {
+                    for (let item of comments) {
+                        renderComment(item);
+                    }
+                } else {
+                    commentBlock.innerHTML =
+                        "<div class='p-3'><h6>No comments yet</h6></div>";
+                }
+            });
+        });
+    }
+
+    function renderComment(commentItem) {
+        const comment = commentTemplate.content.cloneNode(true);
+        comment.querySelector("[name=visitore_name]").textContent = commentItem.visitore_name;
+        comment.querySelector("[name=comment]").textContent = commentItem.comment;
+        comment.querySelector("[name=created_at]").textContent = commentItem.created_at;
+        commentBlock.append(comment);
+    }
+
+    $(document).on("submit", "#addCommentForm", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        $.ajax({
+            url: $(this).attr("action"),
+            method: $(this).attr("method"),
+            data: new FormData(this),
+            dataType: "html",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function () {
+                clearComments();
+                const link = document.querySelector(".postId").value;
+                getComments(link);
+                reply.querySelectorAll(".comment").forEach((input) => (input.value = ""));
+                replyModal.hide();
+                replyModal.handleUpdate();
+            },
+        });
+    });
+
+    $(document).on("click", "a.post-link", function (e) {
         e.preventDefault();
 
-        clear();
+        clearPosts();
 
-        let link = e.currentTarget.href;
-        link = new URL(link);
+        let url = e.currentTarget.href;
+        const link = new URL(url);
+        let postId = link.searchParams.get("post");
+
 
         aAllPosts.style.cssText = "";
 
         postBtn.setAttribute("hidden", true);
 
-        async function getComments(link) {
-            commentBlock.replaceChildren('');
-            let postId = link.searchParams.get("post");
-            commentBlock.replaceChildren("");
-            await $.get("/posts/", {"post": postId}, async function (result) {
-                await clear();
-                await renderPost(result[0]);
-                document.querySelector("#replyBtn").removeAttribute("hidden");
-                document.querySelector("#commentPostId").value = postId;
-                raiting();
-                await $.get("/getComments/", {post: postId}, async function (comments) {
-                    const commentBlock = document.getElementById("comments");
-                    commentBlock.replaceChildren("");
-                    commentBlock.removeAttribute("hidden");
-                    document.querySelector("a.post").style.cssText =
-                        "pointer-events:none";
-                    if (comments != null) {
-                        for (let item of comments) {
-                            await renderComment(item);
-                        }
-                    } else {
-                        commentBlock.innerHTML =
-                            "<div class='p-3'><h6>No comments yet</h6></div>";
-                    }
-                    postId = null;
-                });
-            });
-        }
+        setTimeout(function () {
+            getComments(postId)
+        }, 0);
 
-        await getComments(link);
-
-        function renderComment(commentItem) {
-            const comment = commentTemplate.content.cloneNode(true);
-            comment.querySelector("[name=visitore_name]").textContent = commentItem.visitore_name;
-            comment.querySelector("[name=comment]").textContent = commentItem.comment;
-            comment.querySelector("[name=created_at]").textContent = commentItem.created_at;
-            commentBlock.append(comment);
-        }
-
-
-        $(document).on("submit", "form.addCommentForm", function (ev) {
-            ev.preventDefault();
-            $.ajax({
-                url: $(this).attr("action"),
-                method: $(this).attr("method"),
-                data: new FormData(this),
-                dataType: "html",
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: async function () {
-                    clear();
-                    await getComments(link);
-                    reply.querySelectorAll(".comment").forEach((input) => (input.value = ""));
-                    replyModal.handleUpdate();
-                    replyModal.hide();
-                },
-            });
-        });
     });
 
-    aAllPosts.addEventListener("click", async function (e) {
+    aAllPosts.addEventListener("click", function (e) {
         e.preventDefault();
-        clear();
-        await getAllPosts();
+        clearPosts();
+        setTimeout(getAllPosts, 0);
         aAllPosts.style.cssText = "pointer-events:none";
         postBtn.removeAttribute("hidden");
         commentBlock.setAttribute("hidden", true);
@@ -198,6 +208,7 @@ document.addEventListener("DOMContentLoaded", function (ev) {
         if (ratings.length > 0) {
             initRatings();
         }
+
 
         function initRatings() {
             let ratingActive, ratingValue;
@@ -228,16 +239,15 @@ document.addEventListener("DOMContentLoaded", function (ev) {
             function setRating(rating) {
                 const ratingItems = rating.querySelectorAll("[name=rating]");
                 ratingItems.forEach(function (ratingItem) {
-                    ratingItem.addEventListener("mouseenter", function (e) {
+                    ratingItem.addEventListener("mouseenter", function () {
                         initRatingVars(rating);
                         setRatingActiveWidth(ratingItem.value);
                     });
-                    ratingItem.addEventListener("mouseleave", function (e) {
+                    ratingItem.addEventListener("mouseleave", function () {
                         setRatingActiveWidth();
                     });
-                    ratingItem.addEventListener("click", function (e) {
+                    ratingItem.addEventListener("click", function () {
                         setRatingValue(ratingItem.value, rating);
-                        positiveAndNegative();
                     });
                 });
             }
@@ -264,6 +274,7 @@ document.addEventListener("DOMContentLoaded", function (ev) {
                                 }
                             });
                             setRatingActiveWidth();
+                            positiveAndNegative();
                         });
                         newRated = newRated.concat(postID);
                         sessionStorage.setItem("posts", JSON.stringify(newRated));
