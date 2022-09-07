@@ -19,6 +19,8 @@ services:
       MYSQL_ROOT_PASSWORD: "Qwasz#112233"
     ports:
       - 3306:3306
+    volumes:
+      - ./db:/var/lib/mysql
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin

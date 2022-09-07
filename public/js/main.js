@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function (ev) {
     });
 
     function getComments(postId) {
+        clearPosts();
         $.get("/posts/", {"post": postId}, async function (result) {
-            clearPosts();
             await renderPost(result[0]);
             setTimeout(function () {
                 document.querySelector("#replyBtn").removeAttribute("hidden");
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function (ev) {
     $(document).on("click", "a.post-link", function (e) {
         e.preventDefault();
 
-        clearPosts();
+        setTimeout(clearPosts, 0);
 
         let url = e.currentTarget.href;
         const link = new URL(url);
@@ -248,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function (ev) {
                     });
                     ratingItem.addEventListener("click", function () {
                         setRatingValue(ratingItem.value, rating);
+                        setTimeout(setRatingActiveWidth, 0);
                     });
                 });
             }
@@ -273,7 +274,6 @@ document.addEventListener("DOMContentLoaded", function (ev) {
                                     ratingValue.textContent = 0;
                                 }
                             });
-                            setRatingActiveWidth();
                             positiveAndNegative();
                         });
                         newRated = newRated.concat(postID);

@@ -1,3 +1,4 @@
 /.env
 /Lib/queries.php
 /.idea
+/db/
